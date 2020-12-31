@@ -1,6 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
+
+function countActiveUsers(users) {
+    /* onChange()를 통해 상태를 바꿀때마다 component는 reRendering됨
+     * 그로인해 불필요하게 countActiveUsers()가 반복적으로 호출된다.
+     * useMemo : 특정값이 변경됐을때만 특정 함수를 통해 연산을 처리하고
+     *           해당값이 변경된게 아니라면 reRedering 됐을때 이전값을 단순참조한다.
+     */
+    console.log('활성 사용자 수를 세는중...');
+    return users.filter((user) => user.active).length;
+}
 
 function App() {
     const [inputs, setInputs] = useState({
@@ -74,6 +84,10 @@ function App() {
             )
         );
     };
+
+    /* deps에 등록된 [users]의 값이 변경됐을때만 함수를 호출하고 아닌경우엔 이전 count값을 단수 참조함 */
+    const count = useMemo(() => countActiveUsers(users), [users]);
+
     return (
         <>
             <CreateUser
@@ -83,6 +97,7 @@ function App() {
                 onCreate={onCreate}
             />
             <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
+            <div>활성화된 사용자 수 : {count}</div>
         </>
     );
 }

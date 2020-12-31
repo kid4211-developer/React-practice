@@ -23,11 +23,16 @@ function User({ user, onRemove, onToggle }) {
     }, []);
     */
 
+    /* props로 받은 값을 사용 하고자 한다면 deps로 [props]를 등록해야 한다.
+     * [user]와 같이 등록하게 되면 user값이 업데이트 될떄마다 useEffect를 통해 나타남 */
     useEffect(() => {
+        console.log('user값이 업데이트된 후');
         console.log(user);
-    }, [
-        user,
-    ]); /* deps로 [user]를 등록하게 되면 user값이 변경될떄마다 useEffect가 호출됨 */
+        return () => {
+            console.log('user값이 업데이트되기 전');
+            console.log(user);
+        };
+    }, [user]);
 
     return (
         <div>
