@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-function User({ user, onRemove, onToggle }) {
+const User = React.memo(function User({ user, onRemove, onToggle }) {
     const { username, email, id, active } = user; //비구조화 할당을 통한 변수 선언
     /* App.js에 rendering 단계에서 총 3개의 users 요소가 있으므로 User Component의 useEffect는 총 3번 실행됨
      * Component가 사라지는 경우는 return을 통해 함수를 반환해줌
@@ -52,7 +52,7 @@ function User({ user, onRemove, onToggle }) {
             <span>({email})</span>
         </div>
     );
-}
+});
 
 function UserList({ users, onRemove, onToggle }) {
     return (
@@ -69,4 +69,4 @@ function UserList({ users, onRemove, onToggle }) {
     );
 }
 
-export default UserList;
+export default React.memo(UserList);
